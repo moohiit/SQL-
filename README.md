@@ -931,3 +931,126 @@ LEFT JOIN products previous
   ON current.product_id = previous.product_id
   AND current.version_number = previous.version_number + 1;
 ```
+
+**Q73. Find gaps in sequence** (Finance)
+```sql
+-- Task: Find missing order IDs
+
+SELECT 
+  t1.order_id + 1 AS missing_id_start,
+  MIN(t2.order_id) - 1 AS missing_id_end
+FROM orders t1
+LEFT JOIN orders t2 ON t1.order_id < t2.order_id
+WHERE t2.order_id IS NOT NULL
+GROUP BY t1.order_id
+HAVING t1.order_id + 1 < MIN(t2.order_id);
+```
+
+**Q74. Running comparison** (E-commerce)
+```sql
+-- Task: Compare each sale to the next sale
+
+SELECT 
+  s1.sale_id,
+  s1.sale_amount,
+  s2.sale_amount AS next_sale_amount,
+  s2.sale_amount - s1.sale_amount AS difference
+FROM sales s1
+LEFT JOIN sales s2 
+  ON s1.sale_id + 1 = s2.sale_id
+ORDER BY s1.sale_id;
+```
+
+**Q75. Multi-level hierarchy** (FAANG)
+```sql
+-- Task: Find all employees and their chain of command
+
+SELECT 
+  e1.name AS employee,
+  e2.name AS direct_manager,
+  e3.name AS skip_level_manager,
+  e4.name AS director
+FROM employees e1
+LEFT JOIN employees e2 ON e1.manager_id = e2.employee_id
+LEFT JOIN employees e3 ON e2.manager_id = e3.employee_id
+LEFT JOIN employees e4 ON e3.manager_id = e4.employee_id
+WHERE e1.employee_id = 1001;
+```
+
+---
+
+## 🎓 PRACTICE PLATFORMS
+
+### Beginner Level
+1. **SQLBolt** (sqlbolt.com) - Interactive tutorials
+2. **W3Schools SQL** (w3schools.com/sql) - Basic concepts
+3. **Mode Analytics SQL Tutorial** (mode.com/sql-tutorial) - Free lessons
+
+### Intermediate Level
+4. **LeetCode Database** (leetcode.com/problemset/database) - 200+ problems
+5. **HackerRank SQL** (hackerrank.com/domains/sql) - Skill certification
+6. **Stratascratch** (stratascratch.com) - Real interview questions
+
+### Advanced Level
+7. **DataLemur** (datalemur.com) - FAANG interview questions
+8. **SQLPad** (sqlpad.io) - Practice with real datasets
+9. **WindowFunctions.com** - Window function drills
+
+### Company-Specific Practice
+10. **Glassdoor Interview Questions** - Real company experiences
+11. **Blind 75 SQL** - Curated list of most-asked questions
+12. **interviewing.io** - Mock interviews with engineers
+
+---
+
+## 📚 STUDY PLAN
+
+### Week 1-2: Foundations
+- Patterns 1-3: JOINs, GROUP BY, Basic Window Functions
+- Questions 1-28
+- Platform: SQLBolt + W3Schools
+
+### Week 3-4: Intermediate
+- Patterns 4-7: Subqueries, Date Functions, CASE, Strings
+- Questions 29-56
+- Platform: LeetCode Easy/Medium
+
+### Week 5-6: Advanced
+- Patterns 8-10: DISTINCT, HAVING, Self JOINs
+- Questions 57-75
+- Platform: DataLemur + Stratascratch
+
+### Interview Prep Week
+- Review all patterns
+- Do 10 random questions daily
+- Focus on company-specific patterns
+- Practice explaining your thought process
+
+---
+
+## 🎯 COMPANY-SPECIFIC FOCUS
+
+**If interviewing at FAANG:**
+Focus on: Q19-28 (Window Functions), Q29-36 (CTEs), Q60-61 (Deduplication), Q70-75 (Complex Self JOINs)
+
+**If interviewing at Startups:**
+Focus on: Q1-10 (Basic JOINs), Q11-18 (Aggregations), Q37-43 (Date Functions), Q51-56 (String Functions)
+
+**If interviewing at Finance:**
+Focus on: Q5, Q7-8 (Multi-condition JOINs), Q13-18 (Aggregations), Q20, Q23, Q26, Q28 (Window Functions), Q39-43 (Date/Time)
+
+**If interviewing at E-commerce:**
+Focus on: Q2, Q4, Q10 (Customer queries), Q17 (Category analysis), Q22 (Period comparisons), Q42 (Cohort analysis), Q69 (Customer relationships)
+
+---
+
+## 💡 TIPS FOR SUCCESS
+
+1. **Understand the Pattern**: Don't memorize solutions, understand the approach
+2. **Practice Explaining**: Talk through your logic out loud
+3. **Optimize**: Always consider if there's a more efficient solution
+4. **Test Edge Cases**: NULL values, empty results, duplicates
+5. **Clean Code**: Use clear aliases, proper indentation, meaningful names
+6. **Performance**: Know when to use indexes, avoid SELECT *, use EXPLAIN
+
+---
